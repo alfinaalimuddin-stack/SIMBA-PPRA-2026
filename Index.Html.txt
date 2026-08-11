@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMBA PPRA - RS TK.II R.W. Mongisidi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        .login-bg {
+            background-color: #14532d; /* Fallback warna hijau gelap jika gambar gagal dimuat */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url("https://lh3.googleusercontent.com/d/1VwloYcMvf2VKGT9dG3mNzjFZZGz-RvMD");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .logo-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar-closed {
+            transform: translateX(-100%);
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar-closed {
+                transform: translateX(0);
+            }
+            .main-content {
+                transition: margin-left 0.3s ease-in-out;
+            }
+        }
+
+        /* 3D Embossed Effect Classes for Login */
+        .glass-panel-3d {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4f0 100%);
+            border-top: 2px solid rgba(255, 255, 255, 1);
+            border-left: 2px solid rgba(255, 255, 255, 1);
+            border-right: 1px solid rgba(200, 220, 200, 0.5);
+            border-bottom: 1px solid rgba(200, 220, 200, 0.5);
+            box-shadow: 
+                15px 15px 30px rgba(0, 0, 0, 0.4),
+                -10px -10px 20px rgba(255, 255, 255, 0.2),
+                inset 2px 2px 5px rgba(255, 255, 255, 1);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+        }
+
+        .input-3d {
+            background: #f8faf8;
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.05),
+                        inset -3px -3px 6px rgba(255, 255, 255, 1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        
+        .input-3d:focus {
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+                        0 0 0 3px rgba(22, 163, 74, 0.2);
+            outline: none;
+            border-color: #22c55e;
+            background: #ffffff;
+        }
+
+        .btn-3d {
+            background: linear-gradient(145deg, #16a34a, #15803d);
+            box-shadow: 
+                5px 5px 10px rgba(0, 0, 0, 0.2),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.3),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.15s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .btn-3d:hover {
+            background: linear-gradient(145deg, #15803d, #16a34a);
+        }
+
+        .btn-3d:active {
+            box-shadow: 
+                inset 4px 4px 8px rgba(0, 0, 0, 0.4),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+            transform: translateY(2px);
+        }
+
+        .form-input {
+            display: block;
+            width: 100%;
+            border-radius: 0.5rem;
+            border-color: #d1d5db;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            font-size: 0.875rem;
+            padding: 0.625rem 0.75rem;
+            border-width: 1px;
+            background-color: #ffffff;
+        }
+        .form-input:focus {
+            border-color: #16a34a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25.rem;
+        }
+        @media (min-width: 640px) {
+            .form-label { font-size: 0.875rem; }
+        }
+
+        .btn-primary {
+            background-color: #16a34a;
+            color: white;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            padding: 0.625rem 1rem;
+            transition: background-color 0.2s;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary:hover { background-color: #15803d; }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            padding: 0.625rem 1rem;
+            transition: background-color 0.2s;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary:hover { background-color: #f9fafb; }
+
+        /* Hide scrollbar for clean look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden antialiased bg-gray-100">
+
+    <!-- Welcome 3D Popup Modal -->
+    <div id="welcomePopup" class="fixed inset-0 z-[70] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 transition-opacity duration-300">
+        <div class="glass-panel-3d p-6 sm:p-8 w-full max-w-lg mx-auto relative transform scale-100 transition-transform duration-300 text-center shadow-2xl border border-white/40">
+            <button onclick="closeWelcomePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 bg-white/80 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-colors font-bold text-lg" title="Tutup">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="mb-4">
+                <img src="https://lh3.googleusercontent.com/d/1j9S7zSd-HdUYtR9275OhiMers1uuOhcH" alt="Logo RS" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://placehold.co/200x200/16a34a/ffffff?text=RS+M'" class="h-20 sm:h-24 mx-auto mb-3 logo-pulse drop-shadow-md rounded-full bg-white p-1">
+                <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 tracking-tight">Selamat Datang</h2>
+                <p class="text-xs sm:text-sm font-bold text-green-700 mt-1">di SIMBA PPRA Rumah Sakit Tk.II Robert Wolter Mongisidi</p>
+            </div>
+            <div class="bg-green-50/85 border border-green-200 rounded-xl p-4 mb-6 shadow-inner">
+                <p class="text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                    Sistem Informasi Monitoring Evaluasi Kepatuhan Antibiotik
+                </p>
+            </div>
+            <button onclick="closeWelcomePopup()" class="btn-3d w-full py-3 rounded-xl text-sm sm:text-base font-semibold shadow-lg">
+                Mulai Masuk Sistem
+            </button>
+        </div>
+    </div>
+
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center login-bg transition-opacity duration-500 p-4">
+        <div class="glass-panel-3d p-6 sm:p-8 w-full max-w-md mx-auto transform transition-all">
+            <div class="text-center mb-6 sm:mb-8">
+                <img src="https://lh3.googleusercontent.com/d/1j9S7zSd-HdUYtR9275OhiMers1uuOhcH" alt="Logo RS" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://placehold.co/200x200/16a34a/ffffff?text=RS+M'" class="h-24 sm:h-32 mx-auto mb-3 logo-pulse drop-shadow-lg rounded-full bg-white p-1">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight">SIMBA PPRA</h1>
+                <p class="text-xs sm:text-sm font-bold text-green-700 mt-1">Rumah Sakit Tk.II Robert Wolter Mongisidi</p>
+                <p class="text-xs text-gray-600 mt-1 font-medium">Sistem Informasi Monitoring Evaluasi Kepatuhan Antibiotik</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4 sm:mb-5">
+                    <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1 ml-1" for="username">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-green-600 text-sm"></i>
+                        </div>
+                        <input type="text" id="username" class="input-3d block w-full rounded-xl pl-10 pr-3 py-3 text-sm" placeholder="Masukkan username" required>
+                    </div>
+                </div>
+                <div class="mb-6 sm:mb-8">
+                    <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1 ml-1" for="password">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-green-600 text-sm"></i>
+                        </div>
+                        <input type="password" id="password" class="input-3d block w-full rounded-xl pl-10 pr-3 py-3 text-sm" placeholder="Masukkan password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-3d w-full flex justify-center items-center rounded-xl px-5 py-3.5 text-sm sm:text-base focus:outline-none">
+                    <i class="fas fa-sign-in-alt mr-2"></i> MASUK SISTEM
+                </button>
+                <div id="loginError" class="hidden mt-4 text-xs sm:text-sm text-red-600 text-center font-semibold bg-red-50 border border-red-200 p-2.5 rounded-lg shadow-sm">
+                    Username atau password salah.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-30 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 bg-green-800 text-white w-64 z-40 sidebar sidebar-closed lg:translate-x-0 lg:static shadow-xl flex flex-col shrink-0">
+        <div class="flex items-center justify-start h-20 border-b border-green-700 px-4 bg-green-900 cursor-pointer hover:bg-green-950 transition-colors" onclick="showView('dashboard')" title="Kembali ke Dashboard">
+            <img src="https://lh3.googleusercontent.com/d/1j9S7zSd-HdUYtR9275OhiMers1uuOhcH" alt="Logo" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://placehold.co/100x100/16a34a/ffffff?text=RS'" class="h-11 w-11 object-contain mr-3 bg-white rounded-full p-1 shrink-0">
+            <div class="overflow-hidden">
+                <span class="text-lg font-bold tracking-wider block leading-none">SIMBA</span>
+                <span class="text-[10px] text-green-200 block truncate mt-1">RS Tk.II R.W. Mongisidi</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 px-3 py-5 space-y-1.5 overflow-y-auto">
+            <a href="#" onclick="showView('dashboard')" id="nav-dashboard" class="flex items-center px-4 py-3 bg-green-700 rounded-xl transition-all cursor-pointer nav-item text-sm font-medium">
+                <i class="fas fa-chart-pie w-6 text-center text-green-300"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" onclick="showView('inputForm')" id="nav-inputForm" class="flex items-center px-4 py-3 hover:bg-green-700 rounded-xl transition-all cursor-pointer nav-item text-sm font-medium">
+                <i class="fas fa-edit w-6 text-center text-green-300"></i>
+                <span>Input Data PPRA</span>
+            </a>
+            <a href="#" onclick="showView('rekapan')" id="nav-rekapan" class="flex items-center px-4 py-3 hover:bg-green-700 rounded-xl transition-all cursor-pointer nav-item text-sm font-medium">
+                <i class="fas fa-table w-6 text-center text-green-300"></i>
+                <span>Rekapan Data</span>
+            </a>
+            <a href="#" onclick="showView('modul')" id="nav-modul" class="flex items-center px-4 py-3 hover:bg-green-700 rounded-xl transition-all cursor-pointer nav-item text-sm font-medium">
+                <i class="fas fa-book-medical w-6 text-center text-green-300"></i>
+                <span>Modul PPRA</span>
+            </a>
+            <a href="#" onclick="showView('pengaturan')" id="nav-pengaturan" class="flex items-center px-4 py-3 hover:bg-green-700 rounded-xl transition-all cursor-pointer nav-item text-sm font-medium">
+                <i class="fas fa-cog w-6 text-center text-green-300"></i>
+                <span>Pengaturan</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-green-700 bg-green-900">
+            <div class="flex items-center mb-3">
+                <div class="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center text-sm font-bold shadow-inner shrink-0">
+                    A
+                </div>
+                <div class="ml-3 overflow-hidden">
+                    <p class="text-xs font-semibold truncate">Admin PPRA</p>
+                    <p class="text-[10px] text-green-300 truncate">RS Tk.II R.W. Mongisidi</p>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="w-full flex items-center justify-center px-3 py-2 text-xs font-semibold text-red-100 bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm">
+                <i class="fas fa-sign-out-alt mr-2"></i> Keluar Sistem
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div id="mainContent" class="flex-1 flex flex-col h-screen overflow-hidden w-full relative bg-gray-50">
+        
+        <!-- Header -->
+        <header class="bg-white shadow-sm z-30 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 border-b shrink-0">
+            <div class="flex items-center cursor-pointer select-none group" onclick="showView('dashboard')" title="Kembali ke Dashboard">
+                <button onclick="event.stopPropagation(); toggleSidebar();" class="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+                <div class="flex flex-col">
+                    <h2 id="pageTitle" class="text-base sm:text-lg font-bold text-gray-800 group-hover:text-green-700 transition-colors leading-tight">Dashboard Monitoring</h2>
+                    <span class="text-[11px] text-green-700 font-semibold hidden sm:block">Rumah Sakit Tk.II Robert Wolter Mongisidi</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class="relative">
+                    <i class="fas fa-bell text-gray-400 text-lg sm:text-xl cursor-pointer hover:text-green-600 transition-colors"></i>
+                    <span class="absolute top-0 right-0 -mt-1 -mr-1 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-red-500"></span>
+                    </span>
+                </div>
+                <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-green-100 flex items-center justify-center border border-green-200 overflow-hidden shadow-sm">
+                    <img src="https://lh3.googleusercontent.com/d/1j9S7zSd-HdUYtR9275OhiMers1uuOhcH" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://placehold.co/100x100/16a34a/ffffff?text=RS'" class="h-6 sm:h-7 object-contain bg-white rounded-full" alt="Logo">
+                </div>
+            </div>
+        </header>
+
+        <!-- Views Scrollable Container -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 sm:p-6 lg:p-8">
+            
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view-section block animate-fade-in max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                    <!-- Stats Cards -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6 flex items-center hover:shadow-md transition-shadow">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-blue-50 text-blue-600 mr-4 shadow-sm">
+                            <i class="fas fa-users text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">Total Pasien Bulan Ini</p>
+                            <p class="text-xl sm:text-2xl font-bold text-gray-800" id="stat-total">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6 flex items-center hover:shadow-md transition-shadow">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-green-50 text-green-600 mr-4 shadow-sm">
+                            <i class="fas fa-check-circle text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">Rata-rata Kepatuhan</p>
+                            <p class="text-xl sm:text-2xl font-bold text-gray-800" id="stat-compliance">0%</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6 flex items-center hover:shadow-md transition-shadow">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-yellow-50 text-yellow-600 mr-4 shadow-sm">
+                            <i class="fas fa-pills text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">Antibiotik Terbanyak</p>
+                            <p class="text-base sm:text-lg font-bold text-gray-800 truncate w-32 sm:w-36" id="stat-top-ab">-</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6 flex items-center hover:shadow-md transition-shadow">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-purple-50 text-purple-600 mr-4 shadow-sm">
+                            <i class="fas fa-hospital text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">Ruangan Terbanyak</p>
+                            <p class="text-base sm:text-lg font-bold text-gray-800 truncate w-32 sm:w-36" id="stat-top-room">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                    <!-- Chart Placeholder 1 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Tren Kepatuhan Bulanan</h3>
+                        <div class="h-60 sm:h-64 flex items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                            <div class="text-center text-gray-400 p-4">
+                                <i class="fas fa-chart-line text-3xl sm:text-4xl mb-2"></i>
+                                <p class="text-xs sm:text-sm">Grafik statistik akan muncul setelah data evaluasi tercatat</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chart Placeholder 2 -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">Distribusi Penggunaan Antibiotik</h3>
+                        <div class="h-60 sm:h-64 flex items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                             <div class="text-center text-gray-400 p-4">
+                                <i class="fas fa-chart-pie text-3xl sm:text-4xl mb-2"></i>
+                                <p class="text-xs sm:text-sm">Grafik distribusi akan muncul setelah data evaluasi tercatat</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Form View -->
+            <div id="view-inputForm" class="view-section hidden animate-fade-in max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 sm:p-8">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b">
+                        <h3 id="formTitle" class="text-lg sm:text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-file-medical text-green-600 mr-2.5"></i> Form Evaluasi Kepatuhan Antibiotik
+                        </h3>
+                        <button class="btn-secondary text-xs sm:text-sm py-2 px-3" onclick="resetForm()">
+                            <i class="fas fa-redo mr-1.5"></i> Reset
+                        </button>
+                    </div>
+
+                    <form id="ppraForm" onsubmit="handleFormSubmit(event)">
+                        <input type="hidden" id="editingId" value="">
+                        
+                        <!-- Seksi 1: Data Pasien -->
+                        <div class="mb-6 sm:mb-8">
+                            <h4 class="text-xs sm:text-sm font-bold text-green-700 uppercase tracking-wider mb-4 border-l-4 border-green-500 pl-3 py-0.5 bg-green-50 rounded-r-lg">I. Identitas & Perawatan Pasien</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                                <div>
+                                    <label class="form-label">Code Pasien (Bukan RM) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="kodePasien" class="form-input uppercase" required placeholder="Cth: P-001">
+                                </div>
+                                <div>
+                                    <label class="form-label">Tanggal Masuk RS <span class="text-red-500">*</span></label>
+                                    <input type="date" id="tglMasuk" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Tanggal Keluar RS</label>
+                                    <input type="date" id="tglKeluar" class="form-input">
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label">Jenis Usia <span class="text-red-500">*</span></label>
+                                    <select id="jenisUsia" class="form-input" required>
+                                        <option value="">-- Pilih --</option>
+                                        <option value="ANAK">ANAK (0 SD 18 TH)</option>
+                                        <option value="DEWASA">DEWASA (>18 TH)</option>
+                                    </select>
+                                </div>
+                                <div id="bbContainer">
+                                    <label class="form-label">Berat Badan (kg) <span class="text-red-500">*</span></label>
+                                    <input type="number" step="0.1" min="0.1" id="beratBadan" class="form-input" required placeholder="Masukkan berat badan">
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label">Ruang Rawat <span class="text-red-500">*</span></label>
+                                    <select id="ruangRawat" class="form-input" required>
+                                        <option value="">-- Pilih Ruangan --</option>
+                                        <option value="ICU">ICU</option>
+                                        <option value="NICU">NICU</option>
+                                        <option value="AB">AB</option>
+                                        <option value="CENDANA">CENDANA</option>
+                                        <option value="FLAMBOYAN">FLAMBOYAN</option>
+                                        <option value="MELATI">MELATI</option>
+                                        <option value="MAWAR">MAWAR</option>
+                                        <option value="DAHLIA">DAHLIA</option>
+                                        <option value="EDELWEIS">EDELWEIS</option>
+                                        <option value="ANGGREK">ANGGREK</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seksi 2: Diagnosis -->
+                        <div class="mb-6 sm:mb-8">
+                            <h4 class="text-xs sm:text-sm font-bold text-green-700 uppercase tracking-wider mb-4 border-l-4 border-green-500 pl-3 py-0.5 bg-green-50 rounded-r-lg">II. Diagnosis (ICD-10 / Klinis)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                                <div>
+                                    <label class="form-label">Dx Awal Infeksi <span class="text-red-500">*</span></label>
+                                    <textarea id="dxAwal" rows="2" class="form-input" required placeholder="Deskripsi diagnosis awal..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Dx Akhir Infeksi</label>
+                                    <textarea id="dxAkhir" rows="2" class="form-input" placeholder="Deskripsi diagnosis akhir..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seksi 3: Evaluasi Antibiotik -->
+                        <div class="mb-6 sm:mb-8">
+                            <h4 class="text-xs sm:text-sm font-bold text-green-700 uppercase tracking-wider mb-4 border-l-4 border-green-500 pl-3 py-0.5 bg-green-50 rounded-r-lg">III. Evaluasi Kepatuhan Antibiotik</h4>
+                            <div class="bg-blue-50/70 border border-blue-100 rounded-2xl p-4 sm:p-6">
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
+                                    <div>
+                                        <label class="form-label">Jenis Antibiotik & Rejimen Dosis <span class="text-red-500">*</span></label>
+                                        <select id="jenisAntibiotik" class="form-input" required onchange="handleAntibiotikLainnya()">
+                                            <option value="">-- Pilih Antibiotik --</option>
+                                            <option value="Meropenem">Meropenem</option>
+                                            <option value="Imipenem-cilastatin">Imipenem-cilastatin</option>
+                                            <option value="Vancomycin">Vancomycin</option>
+                                            <option value="Ceftazidime-avibactam">Ceftazidime-avibactam</option>
+                                            <option value="Ceftazidime">Ceftazidime</option>
+                                            <option value="Ceftriaxone">Ceftriaxone</option>
+                                            <option value="Cefixime">Cefixime</option>
+                                            <option value="Lefofloxacin">Lefofloxacin</option>
+                                            <option value="Ciprofloxacin">Ciprofloxacin</option>
+                                            <option value="Azitromycin">Azitromycin</option>
+                                            <option value="Amikacin">Amikacin</option>
+                                            <option value="Gentamicin">Gentamicin</option>
+                                            <option value="Ampicillin - sulbactam">Ampicillin - sulbactam</option>
+                                            <option value="Metronidazole">Metronidazole</option>
+                                            <option value="Clindamycin">Clindamycin</option>
+                                            <option value="Lainnya">Yang lain...</option>
+                                        </select>
+                                    </div>
+                                    <div id="antibiotikLainnyaContainer" class="hidden">
+                                        <label class="form-label">Sebutkan Antibiotik Lainnya <span class="text-red-500">*</span></label>
+                                        <input type="text" id="antibiotikLainnya" class="form-input" placeholder="Masukkan nama antibiotik">
+                                    </div>
+                                </div>
+
+                                <h5 class="text-xs sm:text-sm font-bold text-gray-700 mb-2 border-b pb-2">Kesesuaian dengan PPK/PPAB RS</h5>
+                                <p class="text-xs text-blue-700 mb-4 bg-blue-100/80 p-2.5 rounded-lg font-medium"><i class="fas fa-calculator mr-1.5"></i> Rumus Persentase Kepatuhan: <strong>[Jumlah Y / (Y + N)] × 100%</strong></p>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                                    <div class="bg-white p-3 rounded-xl border shadow-sm">
+                                        <label class="form-label text-[11px] sm:text-xs">Antibiotik sesuai PPK? <span class="text-red-500">*</span></label>
+                                        <select id="evalJenis" class="form-input py-1.5 text-xs sm:text-sm compliance-eval" required>
+                                            <option value="">-Pilih-</option>
+                                            <option value="Y">Y (Sesuai)</option>
+                                            <option value="N">N (Tidak)</option>
+                                        </select>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl border shadow-sm">
+                                        <label class="form-label text-[11px] sm:text-xs">Dosis sesuai PPK? <span class="text-red-500">*</span></label>
+                                        <select id="evalDosis" class="form-input py-1.5 text-xs sm:text-sm compliance-eval" required>
+                                            <option value="">-Pilih-</option>
+                                            <option value="Y">Y (Sesuai)</option>
+                                            <option value="N">N (Tidak)</option>
+                                        </select>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl border shadow-sm">
+                                        <label class="form-label text-[11px] sm:text-xs">Interval sesuai PPK? <span class="text-red-500">*</span></label>
+                                        <select id="evalInterval" class="form-input py-1.5 text-xs sm:text-sm compliance-eval" required>
+                                            <option value="">-Pilih-</option>
+                                            <option value="Y">Y (Sesuai)</option>
+                                            <option value="N">N (Tidak)</option>
+                                        </select>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl border shadow-sm">
+                                        <label class="form-label text-[11px] sm:text-xs">Rute sesuai PPK? <span class="text-red-500">*</span></label>
+                                        <select id="evalRute" class="form-input py-1.5 text-xs sm:text-sm compliance-eval" required>
+                                            <option value="">-Pilih-</option>
+                                            <option value="Y">Y (Sesuai)</option>
+                                            <option value="N">N (Tidak)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-evenly bg-white p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-sm gap-6">
+                                    <div class="text-center flex-1">
+                                        <span class="block text-[11px] sm:text-xs text-gray-500 font-bold mb-1 uppercase tracking-wider">Hasil Evaluasi Kepatuhan</span>
+                                        <span id="hasilKepatuhanText" class="text-2xl sm:text-3xl font-extrabold text-gray-400 drop-shadow-sm transition-colors duration-300">Belum Lengkap</span>
+                                    </div>
+                                    <div class="hidden sm:block h-14 w-px bg-gray-200"></div>
+                                    <div class="text-center flex-1">
+                                        <span class="block text-[11px] sm:text-xs text-gray-500 font-bold mb-2 uppercase tracking-wider">Persentase</span>
+                                        <div class="relative inline-flex items-center justify-center bg-gray-50 rounded-full shadow-sm p-1">
+                                            <svg class="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
+                                                <circle cx="50%" cy="50%" r="28" stroke="currentColor" stroke-width="7" fill="transparent" class="text-gray-200" />
+                                                <circle id="complianceCircle" cx="50%" cy="50%" r="28" stroke="currentColor" stroke-width="7" fill="transparent" stroke-dasharray="176" stroke-dashoffset="176" class="text-green-500 transition-all duration-1000 ease-out" />
+                                            </svg>
+                                            <span id="persentaseText" class="absolute text-base sm:text-lg font-bold text-gray-800">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="statusKepatuhanLengkap" value="">
+                                <input type="hidden" id="nilaiPersentase" value="0">
+
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-4 border-t">
+                            <button type="button" class="btn-secondary w-full sm:w-auto" onclick="showView('dashboard')">Batal</button>
+                            <button type="submit" class="btn-primary w-full sm:w-auto">
+                                <i class="fas fa-save mr-2"></i> <span id="formSubmitBtnText">Simpan Data Evaluasi</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Rekapan View -->
+            <div id="view-rekapan" class="view-section hidden animate-fade-in max-w-7xl mx-auto h-[calc(100vh-120px)] flex flex-col">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col flex-1">
+                    
+                    <div class="p-4 sm:p-6 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0 bg-gray-50 shrink-0">
+                        <div>
+                            <h3 class="text-base sm:text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-table text-green-600 mr-2.5"></i> Rekapan Data SIMBA
+                            </h3>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Database lokal terenkripsi aman di perangkat browser</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                            <button onclick="exportToExcel()" class="btn-secondary text-xs sm:text-sm text-green-700 border-green-200 hover:bg-green-50 flex-1 sm:flex-none">
+                                <i class="fas fa-file-excel mr-1.5"></i> Excel
+                            </button>
+                            <button onclick="exportToPDF()" class="btn-secondary text-xs sm:text-sm text-red-700 border-red-200 hover:bg-red-50 flex-1 sm:flex-none">
+                                <i class="fas fa-file-pdf mr-1.5"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-b bg-white flex flex-col md:flex-row gap-3 items-center justify-between shrink-0">
+                        <div class="relative w-full md:w-72">
+                            <input type="text" id="searchInput" class="form-input pl-10 text-xs sm:text-sm" placeholder="Cari Code Pasien / Antibiotik..." onkeyup="renderTable()">
+                            <i class="fas fa-search absolute left-3.5 top-3.5 text-gray-400 text-xs sm:text-sm"></i>
+                        </div>
+                        <div class="flex items-center space-x-2 text-xs sm:text-sm text-gray-600 w-full md:w-auto justify-end">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full font-semibold shadow-sm"><span id="filterSesuai">0</span> Sesuai</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full font-semibold shadow-sm"><span id="filterTidakSesuai">0</span> Tidak Sesuai</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-auto no-scrollbar">
+                        <table class="min-w-full divide-y divide-gray-200" id="rekapanTable">
+                            <thead class="bg-gray-100 sticky top-0 shadow-sm z-10">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Aksi</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Tgl Input</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Code Pasien</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Usia/BB</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Ruang Rawat</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Antibiotik</th>
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap" title="Jenis/Dosis/Interval/Rute">Evaluasi (Y/N)</th>
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Kepatuhan</th>
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Data populated via JS -->
+                            </tbody>
+                        </table>
+                        <div id="emptyState" class="hidden flex-col items-center justify-center py-16 text-gray-400">
+                            <i class="fas fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                            <p class="text-sm font-medium">Belum ada data evaluasi PPRA tersimpan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modul View (Active Upload & Storage) -->
+            <div id="view-modul" class="view-section hidden animate-fade-in max-w-6xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 sm:p-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 pb-4 border-b">
+                        <div>
+                            <h3 class="text-base sm:text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-book-medical text-green-600 mr-2.5"></i> Dokumen & Modul PPRA
+                            </h3>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Kelola dan unggah file pedoman, panduan, serta instrumen PPRA</p>
+                        </div>
+                        <button class="btn-primary text-xs sm:text-sm" onclick="openUploadModal()">
+                            <i class="fas fa-upload mr-1.5"></i> Unggah Modul Baru
+                        </button>
+                    </div>
+                    
+                    <div id="moduleGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        <!-- Dynamically rendered modules -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pengaturan View -->
+            <div id="view-pengaturan" class="view-section hidden animate-fade-in max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 sm:p-8">
+                    <h3 class="text-base sm:text-xl font-bold text-gray-800 mb-6 pb-4 border-b flex items-center">
+                        <i class="fas fa-cog text-gray-600 mr-2.5"></i> Pengaturan & Konfigurasi Sistem
+                    </h3>
+                    
+                    <div class="space-y-6 sm:space-y-8">
+                        <!-- Profil RS & Target PPRA -->
+                        <div class="bg-gray-50/80 p-4 sm:p-6 rounded-2xl border">
+                            <h4 class="font-bold text-gray-800 flex items-center mb-2 text-sm sm:text-base">
+                                <i class="fas fa-hospital text-green-600 mr-2"></i> Profil RS & Parameter Evaluasi
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-600 mb-4">Pengaturan identitas fasilitas pelayanan kesehatan dan parameter acuan monitoring kepatuhan.</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">Nama Rumah Sakit</label>
+                                    <input type="text" class="form-input text-xs sm:text-sm bg-white" value="RS Tk.II Robert Wolter Mongisidi" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Standar Kepatuhan Optimal (%)</label>
+                                    <input type="number" class="form-input text-xs sm:text-sm bg-white" value="100" min="50" max="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Integrasi GSheet -->
+                        <div class="bg-gray-50/80 p-4 sm:p-6 rounded-2xl border">
+                            <h4 class="font-bold text-gray-800 flex items-center mb-2 text-sm sm:text-base">
+                                <i class="fas fa-database text-green-600 mr-2"></i> Integrasi Google Spreadsheet (Opsional)
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-600 mb-4">Hubungkan aplikasi dengan Google Apps Script (GAS) Web App URL untuk sinkronisasi cloud secara real-time.</p>
+                            
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input type="text" id="gasUrl" class="form-input flex-1 text-xs sm:text-sm" placeholder="https://script.google.com/macros/s/.../exec">
+                                <button class="btn-primary shrink-0 text-xs sm:text-sm" onclick="saveSettings()">Simpan URL</button>
+                            </div>
+                            <!-- Menambahkan Kontainer Sinkronisasi -->
+                            <div class="mt-3 hidden" id="syncContainer">
+                                <button id="syncBtn" class="btn-secondary w-full text-xs sm:text-sm text-blue-700 border-blue-200 hover:bg-blue-50" onclick="syncAllData()">
+                                    <span id="syncBtnText"><i class="fas fa-sync-alt mr-1.5"></i> Sinkronisasi Semua Data Lokal ke Cloud</span>
+                                </button>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-gray-500 mt-2.5"><i class="fas fa-info-circle mr-1"></i> Saat ini aplikasi berjalan optimal dengan penyimpanan lokal aman (Local Storage).</p>
+                        </div>
+
+                        <!-- Backup & Pemeliharaan Data -->
+                        <div class="bg-gray-50/80 p-4 sm:p-6 rounded-2xl border">
+                            <h4 class="font-bold text-gray-800 flex items-center mb-2 text-sm sm:text-base">
+                                <i class="fas fa-shield-alt text-green-600 mr-2"></i> Pemeliharaan & Cadangan Data Lokal
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-600 mb-4">Lakukan pencadangan (backup) seluruh data evaluasi pasien secara berkala untuk keamanan data.</p>
+                            
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="backupLocalData()" class="btn-secondary text-xs sm:text-sm">
+                                    <i class="fas fa-download mr-1.5 text-green-600"></i> Unduh Cadangan (JSON)
+                                </button>
+                                <button onclick="confirmClearAllData()" class="bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 font-medium rounded-lg text-xs sm:text-sm px-4 py-2.5 transition-colors shadow-sm flex items-center">
+                                    <i class="fas fa-trash-alt mr-1.5"></i> Hapus Seluruh Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Upload Module Modal -->
+    <div id="uploadModal" class="fixed inset-0 z-[65] flex items-center justify-center hidden p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeUploadModal()"></div>
+        <div class="bg-white rounded-2xl p-6 shadow-2xl z-10 w-full max-w-md mx-auto transform scale-95 transition-transform duration-200" id="uploadModalContent">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 flex items-center">
+                    <i class="fas fa-cloud-upload-alt text-green-600 mr-2"></i> Unggah Dokumen / Modul
+                </h3>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600 text-lg font-bold"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="uploadModuleForm" onsubmit="handleModuleUpload(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="form-label">Judul / Nama Dokumen <span class="text-red-500">*</span></label>
+                        <input type="text" id="modulTitle" class="form-input" required placeholder="Cth: Pedoman Penggunaan Antibiotik 2026">
+                    </div>
+                    <div>
+                        <label class="form-label">Kategori Dokumen <span class="text-red-500">*</span></label>
+                        <select id="modulCategory" class="form-input" required>
+                            <option value="Pedoman Utama">Pedoman Utama</option>
+                            <option value="Referensi Form">Referensi Form</option>
+                            <option value="SK & Kebijakan">SK & Kebijakan</option>
+                            <option value="Laporan & Audit">Laporan & Audit</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Pilih File (PDF, Word, Excel, Gambar) <span class="text-red-500">*</span></label>
+                        <input type="file" id="modulFile" class="form-input text-xs" required accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg">
+                    </div>
+                </div>
+                <div class="mt-6 flex space-x-3 justify-end">
+                    <button type="button" onclick="closeUploadModal()" class="btn-secondary">Batal</button>
+                    <button type="submit" class="btn-primary">Unggah File</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Modal Structure -->
+    <div id="customModal" class="fixed inset-0 z-[60] flex items-center justify-center hidden p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeModal()"></div>
+        <div class="bg-white rounded-2xl p-6 shadow-2xl z-10 w-full max-w-sm mx-auto transform scale-95 transition-transform duration-200" id="modalContent">
+            <div class="text-center">
+                <div id="modalIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4">
+                    <!-- Icon injected via JS -->
+                </div>
+                <h3 id="modalTitle" class="text-base sm:text-lg font-bold text-gray-900 mb-2">Notice</h3>
+                <div class="mt-1">
+                    <p id="modalMessage" class="text-xs sm:text-sm text-gray-600 leading-relaxed"></p>
+                </div>
+            </div>
+            <div id="modalActionContainer" class="mt-6 flex space-x-3 justify-center">
+                <!-- Action buttons injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let appData = [];
+        try {
+            const storedData = localStorage.getItem('simba_data');
+            appData = storedData ? JSON.parse(storedData) : [];
+            if (!Array.isArray(appData)) appData = [];
+        } catch (e) {
+            console.error('Error parsing simba_data:', e);
+            appData = [];
+        }
+        
+        // Default Modules dikosongkan agar daftar modul bersih dari file bawaan
+        const defaultModules = [];
+        let storedModules = [];
+        try {
+            const rawModules = localStorage.getItem('simba_modules');
+            if (rawModules) {
+                storedModules = JSON.parse(rawModules);
+                if (Array.isArray(storedModules)) {
+                    // Bersihkan modul bawaan lama (mod-1 & mod-2)
+                    storedModules = storedModules.filter(m => m.id !== 'mod-1' && m.id !== 'mod-2');
+                    localStorage.setItem('simba_modules', JSON.stringify(storedModules));
+                } else {
+                    storedModules = [];
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing simba_modules:', e);
+            storedModules = [];
+        }
+        
+        let appModules = storedModules.length > 0 ? storedModules : defaultModules;
+
+        const adminCredentials = { u: 'admin', p: 'admin' };
+        
+        // Form Logic Variables
+        const evaluasiSelects = document.querySelectorAll('.compliance-eval');
+        
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check session
+            if(sessionStorage.getItem('simba_logged_in') === 'true') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                updateDashboardStats();
+                renderTable();
+                renderModules();
+            }
+
+            // Attach event listeners for real-time compliance calculation
+            evaluasiSelects.forEach(select => {
+                select.addEventListener('change', calculateCompliance);
+            });
+
+            // Set max date for Tgl Masuk/Keluar to today
+            const today = new Date().toISOString().split('T')[0];
+            const tglMasukEl = document.getElementById('tglMasuk');
+            const tglKeluarEl = document.getElementById('tglKeluar');
+            if(tglMasukEl) tglMasukEl.max = today;
+            if(tglKeluarEl) tglKeluarEl.max = today;
+
+            // Load saved settings
+            const savedUrl = localStorage.getItem('simba_gas_url');
+            if(savedUrl) {
+                const gasInput = document.getElementById('gasUrl');
+                if(gasInput) gasInput.value = savedUrl;
+                checkSyncButton();
+            }
+        });
+
+        function closeWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
+        }
+
+        // --- Custom Modal System ---
+        function showModal(type, title, message, onConfirm = null) {
+            const modal = document.getElementById('customModal');
+            const iconContainer = document.getElementById('modalIcon');
+            const titleEl = document.getElementById('modalTitle');
+            const msgEl = document.getElementById('modalMessage');
+            const contentEl = document.getElementById('modalContent');
+            const actionContainer = document.getElementById('modalActionContainer');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (type === 'success') {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 mb-4 shadow-inner';
+                iconContainer.innerHTML = '<i class="fas fa-check text-xl"></i>';
+            } else if (type === 'error') {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 mb-4 shadow-inner';
+                iconContainer.innerHTML = '<i class="fas fa-times text-xl"></i>';
+            } else if (type === 'confirm') {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 text-yellow-600 mb-4 shadow-inner';
+                iconContainer.innerHTML = '<i class="fas fa-exclamation-triangle text-xl"></i>';
+            } else {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 mb-4 shadow-inner';
+                iconContainer.innerHTML = '<i class="fas fa-info text-xl"></i>';
+            }
+
+            if (type === 'confirm' && onConfirm) {
+                actionContainer.innerHTML = `
+                    <button type="button" onclick="closeModal()" class="flex-1 rounded-xl border border-gray-300 shadow-sm px-4 py-2.5 bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none transition-colors">
+                        Batal
+                    </button>
+                    <button type="button" id="modalConfirmBtn" class="flex-1 rounded-xl shadow-sm px-4 py-2.5 bg-red-600 text-sm font-semibold text-white hover:bg-red-700 focus:outline-none transition-colors">
+                        Ya, Lanjutkan
+                    </button>
+                `;
+                document.getElementById('modalConfirmBtn').onclick = () => {
+                    closeModal();
+                    onConfirm();
+                };
+            } else {
+                actionContainer.innerHTML = `
+                    <button type="button" onclick="closeModal()" class="w-full rounded-xl shadow-sm px-4 py-2.5 bg-green-600 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none transition-colors">
+                        Tutup
+                    </button>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                contentEl.classList.remove('scale-95');
+                contentEl.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            const contentEl = document.getElementById('modalContent');
+            contentEl.classList.remove('scale-100');
+            contentEl.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // --- Module Upload & Management ---
+        function openUploadModal() {
+            document.getElementById('uploadModuleForm').reset();
+            const modal = document.getElementById('uploadModal');
+            const content = document.getElementById('uploadModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('uploadModal');
+            const content = document.getElementById('uploadModalContent');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        function handleModuleUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById('modulTitle').value;
+            const category = document.getElementById('modulCategory').value;
+            const fileInput = document.getElementById('modulFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showModal('error', 'File Belum Dipilih', 'Silakan pilih file dokumen terlebih dahulu.');
+                return;
+            }
+
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+            const fileExt = file.name.split('.').pop().toLowerCase();
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const newModule = {
+                    id: 'mod-' + Date.now(),
+                    title: file.name.includes(title) ? file.name : `${title}.${fileExt}`,
+                    category: category,
+                    size: fileSizeMB,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+                    type: fileExt,
+                    fileData: event.target.result // Base64 Data URL
+                };
+
+                appModules.push(newModule);
+                localStorage.setItem('simba_modules', JSON.stringify(appModules));
+                renderModules();
+                closeUploadModal();
+                showModal('success', 'Berhasil Unggah', 'Dokumen modul baru berhasil diunggah dan disimpan ke sistem.');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderModules() {
+            const grid = document.getElementById('moduleGrid');
+            grid.innerHTML = '';
+
+            appModules.forEach(mod => {
+                let iconClass = 'fas fa-file-alt text-gray-500';
+                let bgBadge = 'bg-gray-100 text-gray-800';
+
+                if(['pdf'].includes(mod.type)) {
+                    iconClass = 'fas fa-file-pdf text-red-500';
+                    bgBadge = 'bg-blue-100 text-blue-800';
+                } else if(['xls', 'xlsx', 'csv'].includes(mod.type)) {
+                    iconClass = 'fas fa-file-excel text-green-600';
+                    bgBadge = 'bg-yellow-100 text-yellow-800';
+                } else if(['doc', 'docx'].includes(mod.type)) {
+                    iconClass = 'fas fa-file-word text-blue-600';
+                    bgBadge = 'bg-purple-100 text-purple-800';
+                }
+
+                const card = document.createElement('div');
+                card.className = 'border rounded-xl p-4 hover:shadow-md transition-shadow bg-gray-50/50 relative group';
+                card.innerHTML = `
+                    <div class="absolute top-2.5 right-2.5 flex space-x-1">
+                        <button onclick="viewModule('${mod.id}')" class="p-1.5 text-gray-400 hover:text-blue-600 bg-white rounded-lg shadow-sm border" title="Lihat Dokumen"><i class="fas fa-eye text-xs"></i></button>
+                        <button onclick="downloadModule('${mod.id}')" class="p-1.5 text-gray-400 hover:text-green-600 bg-white rounded-lg shadow-sm border" title="Unduh Dokumen"><i class="fas fa-download text-xs"></i></button>
+                        <button onclick="deleteModule('${mod.id}')" class="p-1.5 text-gray-400 hover:text-red-600 bg-white rounded-lg shadow-sm border" title="Hapus"><i class="fas fa-trash-alt text-xs"></i></button>
+                    </div>
+                    <div class="flex items-center mb-3">
+                        <i class="${iconClass} text-3xl mr-3"></i>
+                        <div class="overflow-hidden pr-24">
+                            <h4 class="font-semibold text-gray-800 text-xs sm:text-sm truncate" title="${mod.title}">${mod.title}</h4>
+                            <p class="text-[11px] text-gray-500 mt-0.5">${mod.size} • ${mod.date}</p>
+                        </div>
+                    </div>
+                    <span class="inline-block px-2 py-0.5 ${bgBadge} text-[11px] rounded-md font-semibold">${mod.category}</span>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Add upload card at the end
+            const addCard = document.createElement('div');
+            addCard.className = 'border border-dashed border-gray-300 rounded-xl p-4 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 hover:text-green-600 cursor-pointer transition-colors h-28 sm:h-32';
+            addCard.onclick = openUploadModal;
+            addCard.innerHTML = `
+                <i class="fas fa-plus-circle text-2xl mb-1.5"></i>
+                <span class="text-xs sm:text-sm font-medium">Tambah Dokumen Lain</span>
+            `;
+            grid.appendChild(addCard);
+        }
+
+        function viewModule(id) {
+            const mod = appModules.find(m => m.id === id);
+            if(mod) {
+                if(mod.fileData) {
+                    const w = window.open('');
+                    w.document.write(`<iframe src="${mod.fileData}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+                } else {
+                    showModal('info', 'Pratinjau Dokumen Resmi', `Menampilkan ringkasan pedoman:\n\n• Judul: ${mod.title}\n• Kategori: ${mod.category}\n• Tanggal: ${mod.date}\n\n(Dokumen standar operasional dan panduan kepatuhan antibiotik RS Tk.II Robert Wolter Mongisidi)`);
+                }
+            }
+        }
+
+        function downloadModule(id) {
+            const mod = appModules.find(m => m.id === id);
+            if(mod) {
+                if(mod.fileData) {
+                    const a = document.createElement('a');
+                    a.href = mod.fileData;
+                    a.download = mod.title;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                } else {
+                    const contentText = `=== DOKUMEN RESMI SIMBA PPRA ===\nRumah Sakit Tk.II Robert Wolter Mongisidi\n\nJudul: ${mod.title}\nKategori: ${mod.category}\nTanggal Publikasi: ${mod.date}\n\nDokumen ini merupakan panduan resmi yang berlaku di lingkungan rumah sakit.`;
+                    const blob = new Blob([contentText], {type: 'text/plain;charset=utf-8'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = mod.title.includes('.') ? mod.title : mod.title + '.txt';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                    showModal('success', 'Unduh Berhasil', `File "${mod.title}" berhasil diunduh.`);
+                }
+            }
+        }
+
+        function deleteModule(id) {
+            showModal('confirm', 'Hapus Modul', 'Apakah Anda yakin ingin menghapus dokumen modul ini?', () => {
+                appModules = appModules.filter(m => m.id !== id);
+                localStorage.setItem('simba_modules', JSON.stringify(appModules));
+                renderModules();
+                showModal('success', 'Berhasil Dihapus', 'Dokumen modul telah dihapus.');
+            });
+        }
+
+        // --- Auth Logic ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('loginError');
+
+            if(u === adminCredentials.u && p === adminCredentials.p) {
+                sessionStorage.setItem('simba_logged_in', 'true');
+                const loginScreen = document.getElementById('loginScreen');
+                loginScreen.classList.add('opacity-0');
+                
+                updateDashboardStats();
+                renderTable();
+                renderModules();
+
+                setTimeout(() => {
+                    loginScreen.classList.add('hidden');
+                    loginScreen.classList.remove('opacity-0');
+                    showModal('success', 'Login Berhasil', 'Selamat datang kembali di SIMBA PPRA RS Tk.II Robert Wolter Mongisidi. Sistem siap digunakan.');
+                }, 500);
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('simba_logged_in');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').classList.add('hidden');
+            
+            const loginScreen = document.getElementById('loginScreen');
+            loginScreen.classList.remove('hidden');
+            showView('dashboard');
+            if(window.innerWidth < 1024) toggleSidebar();
+        }
+
+        // --- Navigation Logic ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('sidebar-closed');
+            
+            if (overlay) {
+                if (sidebar.classList.contains('sidebar-closed')) {
+                    overlay.classList.add('hidden');
+                } else {
+                    overlay.classList.remove('hidden');
+                }
+            }
+        }
+
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('bg-green-700');
+            });
+            
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+            document.getElementById(`nav-${viewId}`).classList.add('bg-green-700');
+
+            const titles = {
+                'dashboard': 'Dashboard Monitoring',
+                'inputForm': 'Input Data Evaluasi PPRA',
+                'rekapan': 'Rekapan Data & Export',
+                'modul': 'Modul & Dokumen PPRA',
+                'pengaturan': 'Pengaturan Sistem'
+            };
+            document.getElementById('pageTitle').textContent = titles[viewId];
+
+            if(viewId === 'rekapan') renderTable();
+            if(viewId === 'dashboard') updateDashboardStats();
+            if(viewId === 'modul') renderModules();
+
+            if(window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                if(!sidebar.classList.contains('sidebar-closed')) toggleSidebar();
+            }
+        }
+
+        // --- Form Logic ---
+        function handleAntibiotikLainnya() {
+            const select = document.getElementById('jenisAntibiotik');
+            const container = document.getElementById('antibiotikLainnyaContainer');
+            const input = document.getElementById('antibiotikLainnya');
+            
+            if(select.value === 'Lainnya') {
+                container.classList.remove('hidden');
+                input.required = true;
+            } else {
+                container.classList.add('hidden');
+                input.required = false;
+                input.value = '';
+            }
+        }
+
+        function calculateCompliance() {
+            let totalY = 0;
+            let totalN = 0;
+            let answeredCount = 0;
+            
+            evaluasiSelects.forEach(select => {
+                if (select.value) {
+                    answeredCount++;
+                    if (select.value === 'Y') totalY++;
+                    if (select.value === 'N') totalN++;
+                }
+            });
+
+            const hasilText = document.getElementById('hasilKepatuhanText');
+            const percentageText = document.getElementById('persentaseText');
+            const circle = document.getElementById('complianceCircle');
+            const hiddenStatus = document.getElementById('statusKepatuhanLengkap');
+            const hiddenNilai = document.getElementById('nilaiPersentase');
+
+            const totalEvaluated = totalY + totalN;
+
+            if (answeredCount === 4 && totalEvaluated > 0) {
+                const percentage = (totalY / totalEvaluated) * 100;
+                const roundedPercentage = Math.round(percentage);
+                
+                percentageText.textContent = `${roundedPercentage}%`;
+                hiddenNilai.value = roundedPercentage;
+
+                const circumference = 176;
+                const offset = circumference - (percentage / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+
+                if (roundedPercentage === 100) {
+                    hasilText.textContent = 'SESUAI';
+                    hasilText.className = 'text-2xl sm:text-3xl font-extrabold text-green-600 drop-shadow-sm transition-colors duration-300';
+                    circle.classList.remove('text-red-500', 'text-yellow-500');
+                    circle.classList.add('text-green-500');
+                    hiddenStatus.value = 'SESUAI';
+                } else {
+                    hasilText.textContent = 'TIDAK SESUAI';
+                    hasilText.className = 'text-2xl sm:text-3xl font-extrabold text-red-600 drop-shadow-sm transition-colors duration-300';
+                    circle.classList.remove('text-green-500', 'text-yellow-500');
+                    circle.classList.add('text-red-500');
+                    hiddenStatus.value = 'TIDAK SESUAI';
+                }
+            } else {
+                hasilText.textContent = 'Belum Lengkap';
+                hasilText.className = 'text-2xl sm:text-3xl font-extrabold text-gray-400 drop-shadow-sm transition-colors duration-300';
+                percentageText.textContent = '0%';
+                circle.style.strokeDashoffset = 176;
+                circle.classList.remove('text-red-500', 'text-yellow-500', 'text-green-500');
+                circle.classList.add('text-gray-300');
+                hiddenStatus.value = '';
+                hiddenNilai.value = '0';
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('ppraForm').reset();
+            document.getElementById('editingId').value = '';
+            document.getElementById('antibiotikLainnyaContainer').classList.add('hidden');
+            document.getElementById('beratBadan').value = '';
+            calculateCompliance();
+            
+            document.getElementById('formSubmitBtnText').textContent = 'Simpan Data Evaluasi';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-file-medical text-green-600 mr-2.5"></i> Form Evaluasi Kepatuhan Antibiotik';
+            document.getElementById('kodePasien').focus();
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if(document.getElementById('statusKepatuhanLengkap').value === '') {
+                showModal('error', 'Evaluasi Belum Lengkap', 'Pastikan semua 4 indikator kesesuaian PPK telah dipilih (Y/N).');
+                return;
+            }
+
+            const abVal = document.getElementById('jenisAntibiotik').value;
+            const finalAb = abVal === 'Lainnya' ? document.getElementById('antibiotikLainnya').value : abVal;
+
+            const editingId = document.getElementById('editingId').value;
+            const jenisUsiaVal = document.getElementById('jenisUsia').value;
+            const bbVal = document.getElementById('beratBadan').value;
+
+            const newData = {
+                id: editingId || Date.now().toString(),
+                tanggalInput: new Date().toLocaleDateString('id-ID'),
+                kodePasien: document.getElementById('kodePasien').value.toUpperCase(),
+                tglMasuk: document.getElementById('tglMasuk').value,
+                tglKeluar: document.getElementById('tglKeluar').value,
+                jenisUsia: jenisUsiaVal,
+                beratBadan: bbVal || '-',
+                ruangRawat: document.getElementById('ruangRawat').value,
+                dxAwal: document.getElementById('dxAwal').value,
+                dxAkhir: document.getElementById('dxAkhir').value || '-',
+                jenisAntibiotik: finalAb,
+                evalJenis: document.getElementById('evalJenis').value,
+                evalDosis: document.getElementById('evalDosis').value,
+                evalInterval: document.getElementById('evalInterval',).value,
+                evalRute: document.getElementById('evalRute').value,
+                statusKepatuhan: document.getElementById('statusKepatuhanLengkap').value,
+                persentase: document.getElementById('nilaiPersentase').value
+            };
+
+            if (editingId) {
+                const index = appData.findIndex(item => item.id === editingId);
+                if (index !== -1) {
+                    appData[index] = newData;
+                    localStorage.setItem('simba_data', JSON.stringify(appData));
+                    
+                    // Trigger sinkronisasi update ke GSheet
+                    syncToGoogleSheets(newData, false);
+
+                    showModal('success', 'Berhasil Diperbarui', 'Data evaluasi pasien ' + newData.kodePasien + ' berhasil diperbarui.');
+                    resetForm();
+                    showView('rekapan');
+                    return;
+                }
+            }
+
+            appData.push(newData);
+            localStorage.setItem('simba_data', JSON.stringify(appData));
+            
+            // Trigger sinkronisasi append ke GSheet
+            syncToGoogleSheets(newData, false);
+
+            showModal('success', 'Berhasil Disimpan', 'Data evaluasi pasien ' + newData.kodePasien + ' berhasil ditambahkan.');
+            resetForm();
+        }
+
+        function editData(id) {
+            const item = appData.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('editingId').value = item.id;
+            document.getElementById('kodePasien').value = item.kodePasien || '';
+            document.getElementById('tglMasuk').value = item.tglMasuk || '';
+            document.getElementById('tglKeluar').value = item.tglKeluar || '';
+            document.getElementById('jenisUsia').value = item.jenisUsia || '';
+            document.getElementById('beratBadan').value = item.beratBadan === '-' ? '' : item.beratBadan;
+
+            document.getElementById('ruangRawat').value = item.ruangRawat || '';
+            document.getElementById('dxAwal').value = item.dxAwal || '';
+            document.getElementById('dxAkhir').value = item.dxAkhir === '-' ? '' : item.dxAkhir;
+
+            const abSelect = document.getElementById('jenisAntibiotik');
+            const options = Array.from(abSelect.options).map(o => o.value);
+            if (options.includes(item.jenisAntibiotik)) {
+                abSelect.value = item.jenisAntibiotik;
+                handleAntibiotikLainnya();
+            } else {
+                abSelect.value = 'Lainnya';
+                handleAntibiotikLainnya();
+                document.getElementById('antibiotikLainnya').value = item.jenisAntibiotik;
+            }
+
+            document.getElementById('evalJenis').value = item.evalJenis || '';
+            document.getElementById('evalDosis').value = item.evalDosis || '';
+            document.getElementById('evalInterval').value = item.evalInterval || '';
+            document.getElementById('evalRute').value = item.evalRute || '';
+
+            calculateCompliance();
+
+            document.getElementById('formSubmitBtnText').textContent = 'Perbarui Data Evaluasi';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit text-blue-600 mr-2.5"></i> Edit Data Evaluasi PPRA';
+
+            showView('inputForm');
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            
+            tbody.innerHTML = '';
+            
+            let filteredData = appData.filter(item => 
+                item.kodePasien.toLowerCase().includes(searchVal) || 
+                item.jenisAntibiotik.toLowerCase().includes(searchVal)
+            );
+
+            filteredData.sort((a, b) => b.id - a.id);
+
+            let statSesuai = 0;
+            let statTidak = 0;
+
+            if (filteredData.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+
+                filteredData.forEach(item => {
+                    if(item.statusKepatuhan === 'SESUAI') statSesuai++; else statTidak++;
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50 transition-colors';
+                    
+                    const statusClass = item.statusKepatuhan === 'SESUAI' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800';
+                        
+                    const evalString = `${item.evalJenis}/${item.evalDosis}/${item.evalInterval}/${item.evalRute}`;
+                    const bbDisplay = item.beratBadan && item.beratBadan !== '-' ? item.beratBadan + ' kg' : '-';
+
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
+                            <div class="flex space-x-1.5">
+                                <button onclick="editData('${item.id}')" class="text-blue-600 hover:text-blue-900 bg-blue-50 p-1.5 rounded-lg border border-blue-100 shadow-sm" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button onclick="deleteDataPrompt('${item.id}')" class="text-red-600 hover:text-red-900 bg-red-50 p-1.5 rounded-lg border border-red-100 shadow-sm" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-500">${item.tanggalInput}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs font-bold text-gray-800">${item.kodePasien}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-500">${item.jenisUsia}<br><span class="text-[11px] text-gray-600">${bbDisplay}</span></td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs font-semibold text-gray-800">${item.ruangRawat}</td>
+                        <td class="px-4 py-3 text-xs text-gray-800 max-w-[140px] truncate" title="${item.jenisAntibiotik}">${item.jenisAntibiotik}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs text-center font-mono tracking-widest text-gray-600">${evalString}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs text-center font-bold ${item.persentase == 100 ? 'text-green-600' : 'text-red-600'}">${item.persentase}%</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-xs text-center">
+                            <span class="px-2.5 py-1 inline-flex text-[11px] leading-tight font-bold rounded-full ${statusClass}">
+                                ${item.statusKepatuhan}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('filterSesuai').textContent = statSesuai;
+            document.getElementById('filterTidakSesuai').textContent = statTidak;
+        }
+
+        function deleteDataPrompt(id) {
+            showModal('confirm', 'Konfirmasi Hapus', 'Apakah Anda yakin ingin menghapus data evaluasi pasien ini?', () => {
+                appData = appData.filter(item => item.id !== id);
+                localStorage.setItem('simba_data', JSON.stringify(appData));
+                renderTable();
+                updateDashboardStats();
+                showModal('success', 'Berhasil Dihapus', 'Data evaluasi telah dihapus dari sistem.');
+            });
+        }
+
+        function confirmClearAllData() {
+            if(appData.length === 0) {
+                showModal('info', 'Data Kosong', 'Tidak ada data tersimpan saat ini.');
+                return;
+            }
+            showModal('confirm', 'Hapus Seluruh Data', 'PERINGATAN: Tindakan ini akan menghapus semua rekapan data pasien secara permanen. Lanjutkan?', () => {
+                appData = [];
+                localStorage.removeItem('simba_data');
+                renderTable();
+                updateDashboardStats();
+                showModal('success', 'Database Direset', 'Semua data rekapan PPRA telah dihapus.');
+            });
+        }
+
+        function backupLocalData() {
+            if (appData.length === 0) {
+                showModal('info', 'Data Kosong', 'Belum ada data untuk dicadangkan.');
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `SIMBA_PPRA_Backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showModal('success', 'Cadangan Berhasil', 'File cadangan JSON berhasil diunduh.');
+        }
+
+        function updateDashboardStats() {
+            if(!appData || appData.length === 0) {
+                document.getElementById('stat-total').textContent = '0';
+                document.getElementById('stat-compliance').textContent = '0%';
+                document.getElementById('stat-top-ab').textContent = '-';
+                document.getElementById('stat-top-room').textContent = '-';
+                return;
+            }
+
+            document.getElementById('stat-total').textContent = appData.length;
+
+            let totalP = 0;
+            const abCounts = {};
+            const roomCounts = {};
+
+            appData.forEach(item => {
+                totalP += parseInt(item.persentase || 0);
+                abCounts[item.jenisAntibiotik] = (abCounts[item.jenisAntibiotik] || 0) + 1;
+                roomCounts[item.ruangRawat] = (roomCounts[item.ruangRawat] || 0) + 1;
+            });
+
+            const avgP = Math.round(totalP / appData.length);
+            const compEl = document.getElementById('stat-compliance');
+            compEl.textContent = `${avgP}%`;
+            compEl.className = `text-xl sm:text-2xl font-bold ${avgP >= 80 ? 'text-green-600' : 'text-yellow-600'}`;
+
+            let maxAb = '-', maxAbCount = 0;
+            for (const [key, value] of Object.entries(abCounts)) {
+                if(value > maxAbCount) { maxAbCount = value; maxAb = key; }
+            }
+            document.getElementById('stat-top-ab').textContent = maxAb;
+
+            let maxRoom = '-', maxRoomCount = 0;
+            for (const [key, value] of Object.entries(roomCounts)) {
+                if(value > maxRoomCount) { maxRoomCount = value; maxRoom = key; }
+            }
+            document.getElementById('stat-top-room').textContent = maxRoom;
+        }
+
+        function exportToExcel() {
+            if (appData.length === 0) {
+                showModal('info', 'Data Kosong', 'Tidak ada data untuk diekspor.');
+                return;
+            }
+            
+            const exportData = appData.map(item => ({
+                'Code Pasien': item.kodePasien,
+                'Tanggal Masuk RS': item.tglMasuk,
+                'Tanggal Keluar RS': item.tglKeluar,
+                'JENIS USIA': item.jenisUsia,
+                'BB (kg)': item.beratBadan,
+                'Ruang Rawat': item.ruangRawat,
+                'Dx Awal Infeksi': item.dxAwal,
+                'Dx Akhir Infeksi': item.dxAkhir,
+                'Jenis Antibiotik & Rejimen Dosis': item.jenisAntibiotik,
+                'Sesuai PPK (Y/N)': item.evalJenis,
+                'Dosis Sesuai (Y/N)': item.evalDosis,
+                'Interval Sesuai (Y/N)': item.evalInterval,
+                'Rute Sesuai (Y/N)': item.evalRute,
+                'KEPATUHAN (SESUAI/ TIDAK SESUAI)': item.statusKepatuhan,
+                '%tase Kepatuhan': `${item.persentase}%`
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Rekapan_PPRA");
+            
+            const dateStr = new Date().toISOString().split('T')[0];
+            XLSX.writeFile(wb, `Laporan_SIMBA_PPRA_${dateStr}.xlsx`);
+        }
+
+        function exportToPDF() {
+            if (appData.length === 0) {
+                showModal('info', 'Data Kosong', 'Tidak ada data untuk diekspor.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'mm', 'a4');
+            
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text("LAPORAN EVALUASI KEPATUHAN ANTIBIOTIK (PPRA)", 14, 15);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`RS TK.II Robert Wolter Mongisidi | Tanggal Cetak: ${new Date().toLocaleDateString('id-ID')}`, 14, 22);
+
+            const head = [['Code Pasien', 'Usia/BB', 'Ruang Rawat', 'Antibiotik', 'Sesuai PPK', 'Dosis', 'Interval', 'Rute', 'Status', '%']];
+            const body = appData.map(item => [
+                item.kodePasien,
+                `${item.jenisUsia}\n${item.beratBadan === '-' ? '' : item.beratBadan+'kg'}`,
+                item.ruangRawat,
+                item.jenisAntibiotik,
+                item.evalJenis,
+                item.evalDosis,
+                item.evalInterval,
+                item.evalRute,
+                item.statusKepatuhan,
+                `${item.persentase}%`
+            ]);
+
+            doc.autoTable({
+                head: head,
+                body: body,
+                startY: 30,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [22, 163, 74] },
+                didParseCell: function(data) {
+                    if (data.section === 'body' && data.column.index === 8) {
+                        if (data.cell.raw === 'SESUAI') {
+                            data.cell.styles.textColor = [22, 163, 74];
+                            data.cell.styles.fontStyle = 'bold';
+                        } else {
+                            data.cell.styles.textColor = [220, 38, 38];
+                            data.cell.styles.fontStyle = 'bold';
+                        }
+                    }
+                }
+            });
+
+            const dateStr = new Date().toISOString().split('T')[0];
+            doc.save(`Laporan_SIMBA_PPRA_${dateStr}.pdf`);
+        }
+
+        function saveSettings() {
+            const url = document.getElementById('gasUrl').value;
+            localStorage.setItem('simba_gas_url', url);
+            showModal('success', 'Pengaturan Disimpan', 'Konfigurasi URL Google Apps Script berhasil diperbarui.');
+            checkSyncButton();
+        }
+
+        // Fungsi baru untuk mengecek ketersediaan URL GSheet
+        function checkSyncButton() {
+            const url = localStorage.getItem('simba_gas_url');
+            const syncBtn = document.getElementById('syncContainer');
+            if(syncBtn) {
+                if(url && url.trim() !== '') {
+                    syncBtn.classList.remove('hidden');
+                } else {
+                    syncBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // Fungsi utama mengirim data ke GSheet secara asinkron
+        function syncToGoogleSheets(data, isBulk = false) {
+            const gasUrl = localStorage.getItem('simba_gas_url');
+            if (!gasUrl) return;
+
+            const originalText = isBulk ? document.getElementById('syncBtnText').innerHTML : '';
+            if (isBulk) {
+                document.getElementById('syncBtnText').innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Menyinkronkan ke Cloud...';
+                document.getElementById('syncBtn').disabled = true;
+            }
+
+            // Membungkus data dengan flag action (single atau bulk upload)
+            const payload = isBulk ? { action: 'bulk', data: data } : { action: 'single', data: data };
+
+            // Menggunakan method 'no-cors' karena Apps Script sering membutuhkan ini untuk cross-domain form
+            fetch(gasUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' }, // Pakai text/plain untuk bypass CORS preflight HTTP
+                body: JSON.stringify(payload)
+            }).then(() => {
+                if (isBulk) {
+                    showModal('success', 'Sinkronisasi Selesai', 'Seluruh rekapan data lokal berhasil dikirim dan diamankan ke Google Spreadsheet.');
+                    document.getElementById('syncBtnText').innerHTML = originalText;
+                    document.getElementById('syncBtn').disabled = false;
+                }
+            }).catch(err => {
+                console.error('Error syncing:', err);
+                if (isBulk) {
+                    showModal('error', 'Koneksi Gagal', 'Terjadi kesalahan saat menghubungi server Google. Pastikan URL benar dan Anda terhubung ke internet.');
+                    document.getElementById('syncBtnText').innerHTML = originalText;
+                    document.getElementById('syncBtn').disabled = false;
+                }
+            });
+        }
+
+        // Fungsi untuk trigger tombol Sinkronisasi Semua Data
+        function syncAllData() {
+            if(appData.length === 0) {
+                showModal('info', 'Data Kosong', 'Tidak ada rekapan data lokal untuk disinkronkan.');
+                return;
+            }
+            syncToGoogleSheets(appData, true);
+        }
+
+    </script>
+</body>
+</html>
